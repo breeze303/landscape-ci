@@ -62,7 +62,7 @@ jobs:
     - name: check disks(克隆源代码)
       run: |
         df -hT /var/lib/docker
-        df- h
+        df -h
 
     - name: Clone Source Code(克隆源代码)
       run: |
