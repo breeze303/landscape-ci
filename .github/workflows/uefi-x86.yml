@@ -59,10 +59,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
-    - name: check disks(克隆源代码)
+    - name: check disks(检查并扩容docker)
       run: |
         df -hT /var/lib/docker
         df -h
+        sudo systemctl stop docker
+        sudo mkdir -p /home/runner/work/landscape-ci/landscape-ci/docker
+        sudo rsync -aP /var/lib/docker/ /home/runner/work/landscape-ci/landscape-ci/docker/
+        sudo mv /var/lib/docker /var/lib/docker.bak
+        sudo ln -s /home/runner/work/landscape-ci/landscape-ci/docker /var/lib/docker
+        sudo systemctl start docker
 
     - name: Clone Source Code(克隆源代码)
       run: |
