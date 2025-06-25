@@ -59,6 +59,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
+    - name: check disks(克隆源代码)
+      run: |
+        df -hT /var/lib/docker
+        df- h
+
     - name: Clone Source Code(克隆源代码)
       run: |
         df -hT $GITHUB_WORKSPACE
@@ -79,6 +84,10 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
+        IMG_FILE=$(basename $(ls output/images/*.img | head -n 1))
+        xz -T0 -9 -v "$IMG_FILE"
+        XZ_FILE=$(basename $(ls output/images/*.xz | head -n 1))
+        echo "FIRMWARE_XZ_NAME=$XZ_FILE" >> $GITHUB_ENV
 
     - name: Check Space Usage(检查空间使用情况)
       if: (!cancelled())
@@ -88,8 +97,8 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       uses: actions/upload-artifact@main
       with:
-        name: ${{ env.SOURCE_REPO }}-bin-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
-        path: ${{ env.OPENWRT_PATH }}/bin
+        name: ${{ env.FIRMWARE_XZ_NAME }}
+        path: ${{ env.LANDSCAPE_PATH }}
 
     - name: Organize Files(整理文件)
       if: steps.compile.outputs.status == 'success'
@@ -103,7 +112,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.FIRMWARE_RELEASE != 'true'
       uses: actions/upload-artifact@main
       with:
-        name: ${{ env.FIRMWARE_IMG_NAME }}
+        name: ${{ env.FIRMWARE_XZ_NAME }}
         path: ${{ env.FIRMWARE_PATH }}
 
     - name: Upload Firmware To Release(发布固件)
