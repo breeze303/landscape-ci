@@ -93,6 +93,7 @@ jobs:
         
     - name: zip file(压缩固件)
       run: |
+        cd $LANDSCAPE_PATH
         IMG_FILE=$(basename $(ls output/images/*.img | head -n 1))
         xz -T0 -9 -v "output/images/$IMG_FILE"
         XZ_FILE=$(basename $(ls output/images/*.xz | head -n 1))
