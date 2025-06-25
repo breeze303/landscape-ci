@@ -90,8 +90,11 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
+        
+    - name: zip file(压缩固件)
+      run: |
         IMG_FILE=$(basename $(ls output/images/*.img | head -n 1))
-        xz -T0 -9 -v "$IMG_FILE"
+        xz -T0 -9 -v "output/images/$IMG_FILE"
         XZ_FILE=$(basename $(ls output/images/*.xz | head -n 1))
         echo "FIRMWARE_XZ_NAME=$XZ_FILE" >> $GITHUB_ENV
 
