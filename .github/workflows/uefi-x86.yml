@@ -7,9 +7,7 @@ on:
 
 env:
   REPO_URL: https://github.com/ThisSeanZhang/landscape-build.git
-  REPO_BRANCH: master
-  CONFIG_FILE: configs/x86-64.config
-  DIY_SCRIPT: diy-script.sh
+  REPO_BRANCH: main
   CLASH_KERNEL: amd64
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
@@ -64,7 +62,7 @@ jobs:
     - name: Clone Source Code(克隆源代码)
       run: |
         df -hT $GITHUB_WORKSPACE
-        git clone $REPO_URL -b $REPO_BRANCH --recurse-submodules landscape
+        git clone --recurse-submodules $REPO_URL -b $REPO_BRANCH landscape
         cd landscape
         echo "LANDSCAPE_PATH=$PWD" >> $GITHUB_ENV
         VERSION_INFO=$(git show -s --date=short --format="作者: %an<br/>时间: %cd<br/>内容: %s<br/>hash: %H")
