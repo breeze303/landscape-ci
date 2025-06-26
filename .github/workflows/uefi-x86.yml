@@ -94,8 +94,8 @@ jobs:
     - name: zip file(压缩固件)
       run: |
         cd $LANDSCAPE_PATH/output
-        tar -Jcf landscape.tar.gz images
-        XZ_FILE=$(basename $(ls output/*.gz | head -n 1))
+        tar -Jcf landscape.tar.xz images
+        XZ_FILE=$(basename $(ls output/*.xz | head -n 1))
         echo "FIRMWARE_XZ_NAME=$XZ_FILE" >> $GITHUB_ENV
 
     - name: Check Space Usage(检查空间使用情况)
