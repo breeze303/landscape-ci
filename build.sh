@@ -10,4 +10,4 @@ cd armbian
     KERNEL_CONFIGURE=no \
     RELEASE=bookworm \
     KERNEL_GIT=shallow \
-    NETWORKING_STACK="none"
+    NETWORKING_STACK="none" > /dev/null
